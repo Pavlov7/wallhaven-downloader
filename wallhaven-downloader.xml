@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="wallhaven-downloader" default="all">
+  
+  
+  <property file="wallhaven-downloader.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.swc"/>
+    <include name="*.zip"/>
+    <include name="*.ear"/>
+    <include name="*.egg"/>
+    <include name="*.ane"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module JavaFxApplication -->
+  
+  <dirname property="module.javafxapplication.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.javafxapplication" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="javafxapplication.output.dir" value="${module.javafxapplication.basedir}/out/production/JavaFxApplication"/>
+  <property name="javafxapplication.testoutput.dir" value="${module.javafxapplication.basedir}/out/test/JavaFxApplication"/>
+  
+  <path id="javafxapplication.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="javafxapplication.module.production.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/jsoup/jsoup/1.10.2/jsoup-1.10.2.jar"/>
+    <pathelement location="${path.variable.maven_repository}/commons-io/commons-io/2.5/commons-io-2.5.jar"/>
+  </path>
+  
+  <path id="javafxapplication.runtime.production.module.classpath">
+    <pathelement location="${javafxapplication.output.dir}"/>
+    <pathelement location="${path.variable.maven_repository}/org/jsoup/jsoup/1.10.2/jsoup-1.10.2.jar"/>
+    <pathelement location="${path.variable.maven_repository}/commons-io/commons-io/2.5/commons-io-2.5.jar"/>
+  </path>
+  
+  <path id="javafxapplication.module.classpath">
+    <pathelement location="${javafxapplication.output.dir}"/>
+    <pathelement location="${path.variable.maven_repository}/org/jsoup/jsoup/1.10.2/jsoup-1.10.2.jar"/>
+    <pathelement location="${path.variable.maven_repository}/commons-io/commons-io/2.5/commons-io-2.5.jar"/>
+  </path>
+  
+  <path id="javafxapplication.runtime.module.classpath">
+    <pathelement location="${javafxapplication.testoutput.dir}"/>
+    <pathelement location="${javafxapplication.output.dir}"/>
+    <pathelement location="${path.variable.maven_repository}/org/jsoup/jsoup/1.10.2/jsoup-1.10.2.jar"/>
+    <pathelement location="${path.variable.maven_repository}/commons-io/commons-io/2.5/commons-io-2.5.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.javafxapplication">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.javafxapplication">
+    <patternset refid="excluded.from.module.javafxapplication"/>
+  </patternset>
+  
+  <path id="javafxapplication.module.sourcepath">
+    <dirset dir="${module.javafxapplication.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.javafxapplication" depends="compile.module.javafxapplication.production,compile.module.javafxapplication.tests" description="Compile module JavaFxApplication"/>
+  
+  <target name="compile.module.javafxapplication.production" description="Compile module JavaFxApplication; production classes">
+    <mkdir dir="${javafxapplication.output.dir}"/>
+    <javac destdir="${javafxapplication.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.javafxapplication}"/>
+      <bootclasspath refid="javafxapplication.module.bootclasspath"/>
+      <classpath refid="javafxapplication.module.production.classpath"/>
+      <src refid="javafxapplication.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.javafxapplication"/>
+    </javac>
+    
+    <copy todir="${javafxapplication.output.dir}">
+      <fileset dir="${module.javafxapplication.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.javafxapplication.tests" depends="compile.module.javafxapplication.production" description="compile module JavaFxApplication; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.javafxapplication" description="cleanup module">
+    <delete dir="${javafxapplication.output.dir}"/>
+    <delete dir="${javafxapplication.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.javafxapplication" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.javafxapplication" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.wallhavendownloader:jar" value="${basedir}/out/artifacts/WallhavenDownloader_jar"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.JavaFxApplication.jar" value="${artifacts.temp.dir}/JavaFxApplication.jar"/>
+  </target>
+  
+  <target name="artifact.wallhavendownloader:jar" depends="init.artifacts, compile.module.javafxapplication" description="Build &#39;WallhavenDownloader:jar&#39; artifact">
+    <property name="artifact.temp.output.wallhavendownloader:jar" value="${artifacts.temp.dir}/WallhavenDownloader_jar"/>
+    <mkdir dir="${artifact.temp.output.wallhavendownloader:jar}"/>
+    <jar destfile="${temp.jar.path.JavaFxApplication.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${javafxapplication.output.dir}"/>
+      <zipfileset src="${path.variable.maven_repository}/org/jsoup/jsoup/1.10.2/jsoup-1.10.2.jar"/>
+      <zipfileset src="${path.variable.maven_repository}/commons-io/commons-io/2.5/commons-io-2.5.jar"/>
+      <zipfileset file="${path.variable.maven_repository}/commons-io/commons-io/2.5/commons-io-2.5.jar"/>
+      <zipfileset file="${path.variable.maven_repository}/org/jsoup/jsoup/1.10.2/jsoup-1.10.2.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.JavaFxApplication.jar}" tofile="${artifact.temp.output.wallhavendownloader:jar}/JavaFxApplication.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.wallhavendownloader:jar" description="Build all artifacts">
+    <mkdir dir="${artifact.output.wallhavendownloader:jar}"/>
+    <copy todir="${artifact.output.wallhavendownloader:jar}">
+      <fileset dir="${artifact.temp.output.wallhavendownloader:jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
